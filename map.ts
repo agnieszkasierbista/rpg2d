@@ -10,7 +10,7 @@ const tree = {
 };
 const water = {
     bg: xyz,
-    fg: xyz,
+    fg: "",
     occupant: ''
 };
 const player = {

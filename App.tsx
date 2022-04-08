@@ -113,16 +113,18 @@ export default function App() {
                                                     flex: 1,
                                                 }]
                                             }>
-                                            <Image
-                                                source={tile.fg}
-                                                style={styles.rock}
-                                                resizeMode="contain"/>
+                                            {tile.fg ? (<Image
+                                                    source={tile.fg}
+                                                    style={styles.rock}
+                                                    resizeMode="contain"/>) :
+                                                null}
                                         </ImageBackground>
                                     ) : (
-                                        <Image
-                                            source={tile.fg}
-                                            style={styles.rock}
-                                            resizeMode="contain"/>
+                                        tile.fg ? (<Image
+                                                source={tile.fg}
+                                                style={styles.rock}
+                                                resizeMode="contain"/>) :
+                                            null
                                     )
                                 }
 
@@ -182,7 +184,7 @@ const styles = StyleSheet.create({
     tile: {
         borderColor: "#523009",
         borderStyle: "solid",
-        borderWidth: 3,
+        borderWidth: 0,
         width: dimensions.tileSize,
         height: dimensions.tileSize,
     },
