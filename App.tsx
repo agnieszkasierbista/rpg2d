@@ -4,19 +4,91 @@ import dimensions from "./dimensions";
 import {knight, map} from "./map";
 
 
-// [[<View />]]
+function mapMove(currentE, x) {
+    const tre = currentE.reduce((acc, rowTile, idx) => {
+        return idx >= x - 2 && idx <= x + 2 ?
+            acc.concat(rowTile) :
+            acc
+    }, [])
+    console.log("tre", tre)
+    return tre
+}
+function genMap(mapka, playerPos) {
+    // 5x7 -->  -2 x +2 & -3 y +3
+    const {x, y} = playerPos;
+    const xyz = mapka.reduce((acc, currentE, idx) => {
+        return idx >= y - 3 && idx <= y + 3 ?
+            acc.concat([mapMove(currentE, x)]) :
+            acc
+    }, [])
+    console.log(xyz);
+    return xyz
+}
+
+const moveDown = (playerPos) => (previousMap) => {
+    const u = JSON.stringify(previousMap);
+
+    const ej = JSON.parse(u);
+
+    try {
+        ej[playerPos.y][playerPos.x].occupant = '';
+        ej[playerPos.y + 1][playerPos.x].occupant = knight;
+    } catch (e) {
+
+    }
+
+    return ej;
+}
+
+const moveRight = (playerPos) => (previousMap) => {
+    const u = JSON.stringify(previousMap);
+
+    const ej = JSON.parse(u);
+
+    try {
+        ej[playerPos.y][playerPos.x].occupant = '';
+        ej[playerPos.y][playerPos.x + 1].occupant = knight;
+    } catch (e) {
+
+    }
+
+    return ej;
+}
+
+
+const setPos = (playerPos) => (previousMap) => {
+    const u = JSON.stringify(previousMap);
+
+    const ej = JSON.parse(u);
+
+    try {
+        ej[playerPos.y][playerPos.x].occupant = knight;
+    } catch (e) {
+
+    }
+
+    return ej;
+}
 
 export default function App() {
 
-    const pos = {x: 2, y: 4}
+    const pos = {x: 2, y: 3}
+
+;
 
     const [playerPos, setPlayerPos] = React.useState(pos);
     const [mapka, setMapka] = React.useState(map);
 
+    React.useEffect(() => {
+
+        setMapka(setPos(playerPos))
+
+    },[])
+
     return (
         <View style={styles.container}>
 
-            {mapka.map((row, y) => {
+            {genMap(mapka, playerPos).map((row, y) => {
                 return row.map((tile, x) => {
 
                     // @ts-ignore
@@ -77,20 +149,20 @@ const Nav = ({setPlayerPos, setMapka, playerPos}) => <View style={styles.nav}>
                     return ({...previousPos, y: previousPos.y + 1});
                 })
 
-            setMapka((previousMap) => {
-                const u = JSON.stringify(previousMap);
 
-                const ej = JSON.parse(u);
+            setMapka(moveDown(playerPos))
+        }}
+    />
+    <Button
+        title="Right"
+        onPress={() => {
+            setPlayerPos(
+                (previousPos) => {
+                    return ({...previousPos, x: previousPos.x + 1});
+                })
 
-                try {
-                    ej[playerPos.y][playerPos.x].occupant = '';
-                    ej[playerPos.y + 1][playerPos.x].occupant = knight;
-                } catch (e) {
 
-                }
-
-                return ej;
-            })
+            setMapka(moveRight(playerPos))
         }}
     />
 </View>
@@ -105,7 +177,7 @@ const styles = StyleSheet.create({
     tile: {
         borderColor: "#523009",
         borderStyle: "solid",
-        borderWidth: 0,
+        borderWidth: 3,
         width: dimensions.tileSize,
         height: dimensions.tileSize,
     },
