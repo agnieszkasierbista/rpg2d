@@ -1,4 +1,4 @@
-import {Button, Image, ImageBackground, StatusBar, StyleSheet, View} from 'react-native';
+import {Button, Image, ImageBackground, StatusBar, StyleSheet, View, Text} from 'react-native';
 import React from "react";
 import dimensions from "./dimensions";
 import {knight, map} from "./map";
@@ -13,6 +13,7 @@ function mapMove(currentE, x) {
     console.log("tre", tre)
     return tre
 }
+
 function genMap(mapka, playerPos) {
     // 5x7 -->  -2 x +2 & -3 y +3
     const {x, y} = playerPos;
@@ -74,7 +75,7 @@ export default function App() {
 
     const pos = {x: 2, y: 3}
 
-;
+    ;
 
     const [playerPos, setPlayerPos] = React.useState(pos);
     const [mapka, setMapka] = React.useState(map);
@@ -83,11 +84,15 @@ export default function App() {
 
         setMapka(setPos(playerPos))
 
-    },[])
+    }, [])
 
     return (
         <View style={styles.container}>
-
+            <View style={{position: 'absolute', bottom: 10, right: 10, backgroundColor: 'magenta'}}>
+                <Text>
+                    {playerPos.x} : {playerPos.y}
+                </Text>
+            </View>
             {genMap(mapka, playerPos).map((row, y) => {
                 return row.map((tile, x) => {
 
