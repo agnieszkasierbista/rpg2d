@@ -8,6 +8,14 @@ const moveDown = (playerPos) => (previousMap) => {
 const moveRight = (playerPos) => (previousMap) => {
    return setPos(playerPos, {x:1, y: 0})(previousMap);
 }
+const moveUp = (playerPos) => (previousMap) => {
+    return setPos(playerPos, {x: 0, y: -1})(previousMap);
+}
+const moveLeft = (playerPos) => (previousMap) => {
+    return setPos(playerPos, {x:-1, y: 0})(previousMap);
+}
+
+
 
 export const setPos = (playerPos, toPos = {x: 0, y: 0}) => (previousMap) => {
     const u = JSON.stringify(previousMap);
@@ -49,13 +57,40 @@ export const Nav = ({setPlayerPos, setMapka, playerPos}) => <View style={styles.
             setMapka(moveRight(playerPos))
         }}
     />
+    <Button
+        title="Left"
+        onPress={() => {
+            setPlayerPos(
+                (previousPos) => {
+                    return ({...previousPos, x: previousPos.x - 1});
+                })
+
+
+            setMapka(moveLeft(playerPos))
+        }}
+    />
+    <Button
+        title="Up"
+        onPress={() => {
+            setPlayerPos(
+                (previousPos) => {
+                    return ({...previousPos, y: previousPos.y - 1});
+                })
+
+
+            setMapka(moveUp(playerPos))
+        }}
+    />
 </View>
 
 const styles = StyleSheet.create({
     nav: {
         position: 'absolute',
         width: 100,
-        height: 60,
-        backgroundColor: 'blue'
+        // height: 60,
+        backgroundColor: 'blue',
+        borderWidth: 3,
+        borderColor: 'red',
+        borderStyle: "solid"
     },
 })
