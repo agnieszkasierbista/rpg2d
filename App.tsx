@@ -1,7 +1,8 @@
-import {Button, Image, ImageBackground, StatusBar, StyleSheet, View, Text} from 'react-native';
+import {Image, ImageBackground, StatusBar, StyleSheet, Text, View} from 'react-native';
 import React from "react";
 import dimensions from "./dimensions";
 import {knight, map} from "./map";
+import {Nav, setPos} from "./Nav";
 
 
 function mapMove(currentE, x) {
@@ -26,50 +27,6 @@ function genMap(mapka, playerPos) {
     return xyz
 }
 
-const moveDown = (playerPos) => (previousMap) => {
-    const u = JSON.stringify(previousMap);
-
-    const ej = JSON.parse(u);
-
-    try {
-        ej[playerPos.y][playerPos.x].occupant = '';
-        ej[playerPos.y + 1][playerPos.x].occupant = knight;
-    } catch (e) {
-
-    }
-
-    return ej;
-}
-
-const moveRight = (playerPos) => (previousMap) => {
-    const u = JSON.stringify(previousMap);
-
-    const ej = JSON.parse(u);
-
-    try {
-        ej[playerPos.y][playerPos.x].occupant = '';
-        ej[playerPos.y][playerPos.x + 1].occupant = knight;
-    } catch (e) {
-
-    }
-
-    return ej;
-}
-
-
-const setPos = (playerPos) => (previousMap) => {
-    const u = JSON.stringify(previousMap);
-
-    const ej = JSON.parse(u);
-
-    try {
-        ej[playerPos.y][playerPos.x].occupant = knight;
-    } catch (e) {
-
-    }
-
-    return ej;
-}
 
 export default function App() {
 
@@ -147,40 +104,7 @@ export default function App() {
     );
 }
 
-const Nav = ({setPlayerPos, setMapka, playerPos}) => <View style={styles.nav}>
-    <Button
-        title="DOWN"
-        onPress={() => {
-            setPlayerPos(
-                (previousPos) => {
-                    return ({...previousPos, y: previousPos.y + 1});
-                })
-
-
-            setMapka(moveDown(playerPos))
-        }}
-    />
-    <Button
-        title="Right"
-        onPress={() => {
-            setPlayerPos(
-                (previousPos) => {
-                    return ({...previousPos, x: previousPos.x + 1});
-                })
-
-
-            setMapka(moveRight(playerPos))
-        }}
-    />
-</View>
-
 const styles = StyleSheet.create({
-    nav: {
-        position: 'absolute',
-        width: 100,
-        height: 60,
-        backgroundColor: 'blue'
-    },
     tile: {
         borderColor: "#523009",
         borderStyle: "solid",
