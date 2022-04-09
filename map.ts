@@ -54,9 +54,13 @@ function genRow(currentE, x) {
     //     return currentE
     // }
     const oj = x <= 3 ? 3 - x : 0 ;
+    const w = currentE.length - 1;
+
+    const abc = (w - x <= 3) ? 3 - (w - x) : 0 ;
+
 
     const tre = currentE.reduce((acc, rowTile, idx) => {
-        return (idx >= x - 3) && (idx <= x + 3 + oj) ?
+        return (idx >= x - 3 - abc) && (idx <= x + 3 + oj) ?
             acc.concat(rowTile) :
             acc
     }, [])
