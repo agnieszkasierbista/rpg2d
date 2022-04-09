@@ -1,31 +1,8 @@
 import {Image, ImageBackground, StatusBar, StyleSheet, Text, View} from 'react-native';
 import React from "react";
 import dimensions from "./dimensions";
-import {knight, map} from "./map";
+import {genMap, map} from "./map";
 import {Nav, setPos} from "./Nav";
-
-
-function mapMove(currentE, x) {
-    const tre = currentE.reduce((acc, rowTile, idx) => {
-        return idx >= x - 3 && idx <= x + 3 ?
-            acc.concat(rowTile) :
-            acc
-    }, [])
-    console.log("tre", tre)
-    return tre
-}
-
-function genMap(mapka, playerPos) {
-    // 5x7 -->  -2 x +2 & -3 y +3
-    const {x, y} = playerPos;
-    const xyz = mapka.reduce((acc, currentE, idx) => {
-        return idx >= y - 3 && idx <= y + 3 ?
-            acc.concat([mapMove(currentE, x)]) :
-            acc
-    }, [])
-    console.log(xyz);
-    return xyz
-}
 
 
 export default function App() {
