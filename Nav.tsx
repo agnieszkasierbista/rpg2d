@@ -85,12 +85,13 @@ export const Nav = ({setPlayerPos, setMapka, playerPos}) => <View style={styles.
 
 const styles = StyleSheet.create({
     nav: {
-        position: 'absolute',
-        width: 100,
-        // height: 60,
+        // position: 'absolute',
+        width: '100%',
+        height: '100%',
+        // flex: 1,
         backgroundColor: 'blue',
-        borderWidth: 3,
-        borderColor: 'red',
-        borderStyle: "solid"
+        // borderWidth: 3,
+        // borderColor: 'red',
+        // borderStyle: "solid"
     },
 })

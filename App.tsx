@@ -7,7 +7,7 @@ import {Nav, setPos} from "./Nav";
 
 function mapMove(currentE, x) {
     const tre = currentE.reduce((acc, rowTile, idx) => {
-        return idx >= x - 2 && idx <= x + 2 ?
+        return idx >= x - 3 && idx <= x + 3 ?
             acc.concat(rowTile) :
             acc
     }, [])
@@ -30,9 +30,7 @@ function genMap(mapka, playerPos) {
 
 export default function App() {
 
-    const pos = {x: 2, y: 3}
-
-    ;
+    const pos = {x: 3, y: 3};
 
     const [playerPos, setPlayerPos] = React.useState(pos);
     const [mapka, setMapka] = React.useState(map);
@@ -45,7 +43,7 @@ export default function App() {
 
     return (
         <View style={styles.container}>
-            <View style={{position: 'absolute', bottom: 10, right: 10, backgroundColor: 'magenta'}}>
+            <View style={{position: 'absolute', bottom: 10, right: 10, backgroundColor: 'magenta', zIndex: 1}}>
                 <Text>
                     {playerPos.x} : {playerPos.y}
                 </Text>
