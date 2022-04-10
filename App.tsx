@@ -70,7 +70,9 @@ export default function App() {
             <Nav
                 setPlayerPos={setPlayerPos}
                 setMapka={setMapka}
-                playerPos={playerPos}/>
+                playerPos={playerPos}
+                mapDimensions={{y: mapka.length, x: mapka[0].length}}
+            />
 
             <StatusBar hidden={true}>
 

@@ -6,15 +6,14 @@ const moveDown = (playerPos) => (previousMap) => {
     return setPos(playerPos, {x: 0, y: 1})(previousMap);
 }
 const moveRight = (playerPos) => (previousMap) => {
-   return setPos(playerPos, {x:1, y: 0})(previousMap);
+    return setPos(playerPos, {x: 1, y: 0})(previousMap);
 }
 const moveUp = (playerPos) => (previousMap) => {
     return setPos(playerPos, {x: 0, y: -1})(previousMap);
 }
 const moveLeft = (playerPos) => (previousMap) => {
-    return setPos(playerPos, {x:-1, y: 0})(previousMap);
+    return setPos(playerPos, {x: -1, y: 0})(previousMap);
 }
-
 
 
 export const setPos = (playerPos, toPos = {x: 0, y: 0}) => (previousMap) => {
@@ -32,53 +31,61 @@ export const setPos = (playerPos, toPos = {x: 0, y: 0}) => (previousMap) => {
     return ej;
 }
 
-export const Nav = ({setPlayerPos, setMapka, playerPos}) => <View style={styles.nav}>
+export const Nav = ({setPlayerPos, setMapka, playerPos, mapDimensions}) => <View style={styles.nav}>
     <Button
         title="DOWN"
         onPress={() => {
-            setPlayerPos(
-                (previousPos) => {
-                    return ({...previousPos, y: previousPos.y + 1});
-                })
+            if (playerPos.y < mapDimensions.y - 1) {
+                setPlayerPos(
+                    (previousPos) => {
+                        return ({...previousPos, y: previousPos.y + 1});
+                    })
 
 
-            setMapka(moveDown(playerPos))
+                setMapka(moveDown(playerPos))
+            }
         }}
     />
     <Button
         title="Right"
         onPress={() => {
-            setPlayerPos(
-                (previousPos) => {
-                    return ({...previousPos, x: previousPos.x + 1});
-                })
+            if (playerPos.x < mapDimensions.x - 1) {
+                setPlayerPos(
+                    (previousPos) => {
+                        return ({...previousPos, x: previousPos.x + 1});
+                    })
 
 
-            setMapka(moveRight(playerPos))
+                setMapka(moveRight(playerPos))
+            }
         }}
     />
     <Button
         title="Left"
         onPress={() => {
-            setPlayerPos(
-                (previousPos) => {
-                    return ({...previousPos, x: previousPos.x - 1});
-                })
+            if (playerPos.x > 0) {
+                setPlayerPos(
+                    (previousPos) => {
+                        return ({...previousPos, x: previousPos.x - 1});
+                    })
 
 
-            setMapka(moveLeft(playerPos))
+                setMapka(moveLeft(playerPos))
+            }
         }}
     />
     <Button
         title="Up"
         onPress={() => {
-            setPlayerPos(
-                (previousPos) => {
-                    return ({...previousPos, y: previousPos.y - 1});
-                })
+            if (playerPos.y > 0) {
+                setPlayerPos(
+                    (previousPos) => {
+                        return ({...previousPos, y: previousPos.y - 1});
+                    })
 
 
-            setMapka(moveUp(playerPos))
+                setMapka(moveUp(playerPos))
+            }
         }}
     />
 </View>
