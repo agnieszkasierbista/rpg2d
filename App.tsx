@@ -1,20 +1,20 @@
 import {Image, ImageBackground, StatusBar, StyleSheet, Text, View} from 'react-native';
 import React from "react";
 import dimensions from "./dimensions";
-import {genMap, map} from "./map";
-import {Nav, setPos} from "./Nav";
+import {clipMap, gameMap} from "./map";
+import {Nav, updateMapWithPlayerPos} from "./Nav";
 
 
 export default function App() {
 
-    const pos = {x: 3, y: 3};
+    const playerPosition = {x: 3, y: 3};
 
-    const [playerPos, setPlayerPos] = React.useState(pos);
-    const [mapka, setMapka] = React.useState(map);
+    const [playerPos, setPlayerPos] = React.useState(playerPosition);
+    const [map, setMap] = React.useState(gameMap);
 
     React.useEffect(() => {
 
-        setMapka(setPos(playerPos))
+        setMap(updateMapWithPlayerPos(playerPos))
 
     }, [])
 
@@ -25,12 +25,11 @@ export default function App() {
                     {playerPos.x} : {playerPos.y}
                 </Text>
             </View>
-            {genMap(mapka, playerPos).map((row, y) => {
+            {clipMap(map, playerPos).map((row, y) => {
                 return row.map((tile, x) => {
 
-                    // @ts-ignore
                     return (
-                        <View key={x} style={styles.tile}>
+                        <View key={`${x}:${y}`} style={styles.tile}>
 
                             <ImageBackground
                                 source={tile.bg}
@@ -38,7 +37,6 @@ export default function App() {
                                 {
                                     tile.occupant ? (
                                         <ImageBackground
-                                            // @ts-ignore
                                             source={tile.occupant}
                                             style={
                                                 [{
@@ -59,7 +57,6 @@ export default function App() {
                                             null
                                     )
                                 }
-
                             </ImageBackground>
 
                         </View>
@@ -69,9 +66,9 @@ export default function App() {
 
             <Nav
                 setPlayerPos={setPlayerPos}
-                setMapka={setMapka}
+                setMap={setMap}
                 playerPos={playerPos}
-                mapDimensions={{y: mapka.length, x: mapka[0].length}}
+                mapDimensions={{y: map.length, x: map[0].length}}
             />
 
             <StatusBar hidden={true}>
