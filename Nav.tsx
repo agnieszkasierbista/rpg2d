@@ -2,31 +2,44 @@ import {knight} from "./map";
 import {Button, View, StyleSheet} from "react-native";
 import React from "react";
 
-const moveDown = (playerPos) => (previousMap) => {
-    return updateMapWithPlayerPos(playerPos, {x: 0, y: 1})(previousMap);
+function moveDown(playerPos) {
+    return (previousMap) => {
+        return updateMapWithPlayerPos(playerPos, {x: 0, y: 1})(previousMap);
+    };
 }
-const moveRight = (playerPos) => (previousMap) => {
-    return updateMapWithPlayerPos(playerPos, {x: 1, y: 0})(previousMap);
+
+function moveRight(playerPos) {
+    return (previousMap) => {
+        return updateMapWithPlayerPos(playerPos, {x: 1, y: 0})(previousMap);
+    };
 }
-const moveUp = (playerPos) => (previousMap) => {
-    return updateMapWithPlayerPos(playerPos, {x: 0, y: -1})(previousMap);
+
+function moveUp(playerPos) {
+    return (previousMap) => {
+        return updateMapWithPlayerPos(playerPos, {x: 0, y: -1})(previousMap);
+    };
 }
-const moveLeft = (playerPos) => (previousMap) => {
-    return updateMapWithPlayerPos(playerPos, {x: -1, y: 0})(previousMap);
+
+function moveLeft(playerPos) {
+    return (previousMap) => {
+        return updateMapWithPlayerPos(playerPos, {x: -1, y: 0})(previousMap);
+    };
 }
 
 
-export const updateMapWithPlayerPos = (playerPos, toPos = {x: 0, y: 0}) => (previousMap) => {
-    const prevMapAsString = JSON.stringify(previousMap);
-    const clonedMap = JSON.parse(prevMapAsString);
-    try {
-        clonedMap[playerPos.y][playerPos.x].occupant = "";
-        clonedMap[playerPos.y + toPos.y][playerPos.x + toPos.x].occupant = knight;
-    } catch (error) {
+export function updateMapWithPlayerPos(playerPos, toPos = {x: 0, y: 0}) {
+    return (previousMap) => {
+        const prevMapAsString = JSON.stringify(previousMap);
+        const clonedMap = JSON.parse(prevMapAsString);
+        try {
+            clonedMap[playerPos.y][playerPos.x].occupant = "";
+            clonedMap[playerPos.y + toPos.y][playerPos.x + toPos.x].occupant = knight;
+        } catch (error) {
 
-    }
+        }
 
-    return clonedMap;
+        return clonedMap;
+    };
 }
 
 export const Nav = ({setPlayerPos, setMap, playerPos, mapDimensions}) => {
