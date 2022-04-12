@@ -80,7 +80,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
     tile: {
-        borderColor: "#523009",
+        borderColor: "#bd1bc9",
         borderStyle: "solid",
         borderWidth: 0,
         width: dimensions.tileSize,
