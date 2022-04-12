@@ -1,8 +1,9 @@
 import {Image, ImageBackground, StatusBar, StyleSheet, Text, View} from 'react-native';
 import React from "react";
 import dimensions from "./dimensions";
-import {clipMap, gameMap} from "./map";
+import {clipMap, gameMap, memoizedClipMap} from "./map";
 import {Nav, updateMapWithPlayerPos} from "./Nav";
+
 
 
 export default function App() {
@@ -25,7 +26,7 @@ export default function App() {
                     {playerPos.x} : {playerPos.y}
                 </Text>
             </View>
-            {clipMap(map, playerPos).map((row, y) => {
+            {memoizedClipMap(map, playerPos).map((row, y) => {
                 return row.map((tile, x) => {
 
                     return (

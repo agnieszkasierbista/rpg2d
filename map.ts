@@ -5,6 +5,8 @@ const warrior = require('./pictures/warrior.png');
 const space = require('./pictures/space2.png');
 export const knight = require('./pictures/knight_16.png');
 
+const memoize = require('memoize');
+
 const abyss = {
     bg: space,
     fg: "",
@@ -81,3 +83,5 @@ export function clipMap(map, playerPos) {
             acc
     }, [])
 }
+
+export const memoizedClipMap = memoize(clipMap);
