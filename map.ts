@@ -30,14 +30,14 @@ const player = {
 }
 export const gameMap = [
     [tree, water, tree, tree, tree, water, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
-    [tree, water, tree, tree, tree,  water, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
+    [tree, water, tree, tree, tree, water, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
     [tree, water, tree, water, water, water, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
-    [tree, water, tree, water, water,  water, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
+    [tree, water, tree, water, water, water, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
     [water, water, tree, water, water, water, tree, tree, tree, tree, water, tree, tree, tree, water, tree, tree, water],
     [water, water, tree, water, water, water, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
     [tree, water, tree, tree, tree, water, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
-    [tree, water, tree, tree, tree,  tree, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
-    [tree, water, tree, tree, tree,  tree, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
+    [tree, water, tree, tree, tree, tree, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
+    [tree, water, tree, tree, tree, tree, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
     [tree, water, tree, tree, tree, water, tree, tree, water, tree, water, tree, water, tree, water, tree, tree, water],
     [tree, water, tree, tree, tree, water, tree, tree, water, tree, water, tree, water, tree, tree, tree, tree, water],
     // [tree, water, tree, tree, tree,  tree, tree, tree, water, tree, water, tree, water, tree, tree, tree, tree, water],
@@ -49,11 +49,23 @@ export const gameMap = [
     // [tree, water, tree, tree, tree,  water, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
     // [tree, water, tree, tree, tree,  water, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
     // [tree, water, tree, tree, tree, water, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
-];
+].map((row, y) => {
+    const sadfasfd = row.map((tile, x) => {
+        return {...tile, indexX: Math.random(), indexY: Math.random()}
+    })
+
+    return {
+        idx: Math.random(),
+        row: sadfasfd
+    }
+
+});
+
+console.log(324234324, gameMap);
 
 function clipRow(currentRow, playerPosX) {
 
-    const distanceFromTheLeftEdgeCofactor = playerPosX <= 3 ? 3 - playerPosX : 0 ;
+    const distanceFromTheLeftEdgeCofactor = playerPosX <= 3 ? 3 - playerPosX : 0;
     const mapWidth = currentRow.length - 1;
     const distanceFromTheRightEdge = mapWidth - playerPosX;
     const distanceFromTheRightEdgeCofactor = (distanceFromTheRightEdge <= 3) ? 3 - distanceFromTheRightEdge : 0;
@@ -71,15 +83,15 @@ export function clipMap(map, playerPos) {
 
     const {x: playerPosX, y: playerPosY} = playerPos;
 
-    const distanceFromTheTopEdgeCofactor = playerPosY <= 3 ? 3 - playerPosY : 0 ;
+    const distanceFromTheTopEdgeCofactor = playerPosY <= 3 ? 3 - playerPosY : 0;
     const mapHeight = map.length - 1;
     const distanceFromTheBottomEdge = mapHeight - playerPosY;
-    const distanceFromTheBottomEdgeCofactor = (distanceFromTheBottomEdge <= 3) ? 3 - distanceFromTheBottomEdge : 0 ;
+    const distanceFromTheBottomEdgeCofactor = (distanceFromTheBottomEdge <= 3) ? 3 - distanceFromTheBottomEdge : 0;
 
     return map.reduce((acc, currentRow, mapY) => {
 
         return (mapY >= playerPosY - 3 - distanceFromTheBottomEdgeCofactor) && (mapY <= playerPosY + 3 + distanceFromTheTopEdgeCofactor) ?
-            acc.concat([clipRow(currentRow, playerPosX)]) :
+            acc.concat({row: clipRow(currentRow.row, playerPosX), idx: currentRow.idx}) :
             acc
     }, [])
 }

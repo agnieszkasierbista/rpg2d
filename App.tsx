@@ -1,9 +1,8 @@
 import {Image, ImageBackground, StatusBar, StyleSheet, Text, View} from 'react-native';
 import React from "react";
 import dimensions from "./dimensions";
-import {clipMap, gameMap, memoizedClipMap} from "./map";
+import {clipMap, gameMap} from "./map";
 import {Nav, updateMapWithPlayerPos} from "./Nav";
-
 
 
 export default function App() {
@@ -19,6 +18,10 @@ export default function App() {
 
     }, [])
 
+    const memoizedClipMap = React.useCallback(() => {
+        return clipMap(map, playerPos);
+    }, [map, playerPos])
+
     return (
         <View style={styles.container}>
             <View style={{position: 'absolute', bottom: 10, right: 10, backgroundColor: 'magenta', zIndex: 1}}>
@@ -26,50 +29,62 @@ export default function App() {
                     {playerPos.x} : {playerPos.y}
                 </Text>
             </View>
-            {memoizedClipMap(map, playerPos).map((row, y) => {
-                return row.map((tile, x) => {
+            {memoizedClipMap().map(({row, idx}, y) => {
 
-                    return (
-                        <View key={`${x}:${y}`} style={styles.tile}>
+                console.log('eee', row);
 
-                            <ImageBackground
-                                source={tile.bg}
-                                style={styles.tree}>
-                                {
-                                    tile.occupant ? (
-                                        <ImageBackground
-                                            source={tile.occupant}
-                                            style={
-                                                [{
-                                                    flex: 1,
-                                                }]
-                                            }>
-                                            {tile.fg ? (<Image
+                return <React.Fragment key={idx}>
+                    {
+                        row.map((tile, x) => {
+                            return (
+                                <View
+                                    key={tile.indexX}
+                                    style={styles.tile}>
+
+                                    <ImageBackground
+                                        source={tile.bg}
+                                        style={styles.tree}>
+                                        {
+                                            tile.occupant ? (
+                                                <Image
+                                                    source={tile.occupant}
+                                                    style={
+                                                        [{
+                                                            position: 'absolute',
+                                                            top: 0,
+                                                            left: 0,
+                                                            right: 0,
+                                                            bottom: 0,
+                                                            height: '100%',
+                                                            width: '100%',
+                                                        }]
+                                                    }/>
+                                            ) : null
+                                        }
+
+                                        {
+                                            tile.fg ? (<Image
                                                     source={tile.fg}
                                                     style={styles.rock}
                                                     resizeMode="contain"/>) :
-                                                null}
-                                        </ImageBackground>
-                                    ) : (
-                                        tile.fg ? (<Image
-                                                source={tile.fg}
-                                                style={styles.rock}
-                                                resizeMode="contain"/>) :
-                                            null
-                                    )
-                                }
-                            </ImageBackground>
+                                                null
+                                        }
+                                    </ImageBackground>
 
-                        </View>
-                    )
-                })
+                                </View>
+                            )
+                        })
+
+                    }
+
+                </React.Fragment>
             })}
 
             <Nav
                 setPlayerPos={setPlayerPos}
                 setMap={setMap}
                 playerPos={playerPos}
-                mapDimensions={{y: map.length, x: map[0].length}}
+                mapDimensions={{y: map.length, x: map[0].row.length}}
             />
 
             <StatusBar hidden={true}>
@@ -96,6 +111,7 @@ const styles = StyleSheet.create({
         // backgroundColor: 'blue'
     },
     rock: {
+        position: 'absolute',
         left: '50%',
         top: '50%',
         width: '50%',

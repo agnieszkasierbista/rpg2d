@@ -32,8 +32,8 @@ export function updateMapWithPlayerPos(playerPos, toPos = {x: 0, y: 0}) {
         const prevMapAsString = JSON.stringify(previousMap);
         const clonedMap = JSON.parse(prevMapAsString);
         try {
-            clonedMap[playerPos.y][playerPos.x].occupant = "";
-            clonedMap[playerPos.y + toPos.y][playerPos.x + toPos.x].occupant = knight;
+            clonedMap[playerPos.y].row[playerPos.x].occupant = "";
+            clonedMap[playerPos.y + toPos.y].row[playerPos.x + toPos.x].occupant = knight;
         } catch (error) {
 
         }
