@@ -7,7 +7,7 @@ import {Nav, updateMapWithPlayerPos} from "./Nav";
 
 export default function App() {
 
-    const playerPosition = {x: 3, y: 3};
+    const playerPosition = {x: 2, y: 2};
 
     const [playerPos, setPlayerPos] = React.useState(playerPosition);
     const [map, setMap] = React.useState(gameMap);
@@ -22,63 +22,85 @@ export default function App() {
         return clipMap(map, playerPos);
     }, [map, playerPos])
 
+    const df = memoizedClipMap();
+
+    console.log('playerPos.x === df[0].row.length - 1',
+        playerPos.x,
+
+        gameMap[0].row.length,
+        playerPos.x === df[0].row.length - 1)
+
     return (
         <View style={styles.container}>
-            <View style={{position: 'absolute', bottom: 10, right: 10, backgroundColor: 'magenta', zIndex: 1}}>
+            <View style={{position: 'absolute', top: 10, right: 10, backgroundColor: 'magenta', zIndex: 10}}>
                 <Text>
                     {playerPos.x} : {playerPos.y}
                 </Text>
             </View>
-            {memoizedClipMap().map(({row, idx}, y) => {
 
-                console.log('eee', row);
 
-                return <React.Fragment key={idx}>
-                    {
-                        row.map((tile, x) => {
-                            return (
-                                <View
-                                    key={tile.indexX}
-                                    style={styles.tile}>
+            <View style={styles.mapWrapper}>
+                <View style={[styles.map,
 
-                                    <ImageBackground
-                                        source={tile.bg}
-                                        style={styles.tree}>
-                                        {
-                                            tile.occupant ? (
-                                                <Image
-                                                    source={tile.occupant}
-                                                    style={
-                                                        [{
-                                                            position: 'absolute',
-                                                            top: 0,
-                                                            left: 0,
-                                                            right: 0,
-                                                            bottom: 0,
-                                                            height: '100%',
-                                                            width: '100%',
-                                                        }]
-                                                    }/>
-                                            ) : null
-                                        }
+                    playerPos.x === gameMap[0].row.length - 1  ? {left: -2 * dimensions.tileSize} : {}, // mapWidth - 1 === 16
+                    playerPos.y > df.length ? {top: -2 * dimensions.tileSize} : {}, // mapHeight - 1 === 9
 
-                                        {
-                                            tile.fg ? (<Image
-                                                    source={tile.fg}
-                                                    style={styles.rock}
-                                                    resizeMode="contain"/>) :
-                                                null
-                                        }
-                                    </ImageBackground>
+                    playerPos.x <= 1 ? {left: 0} : {},
+                    playerPos.y <= 1 ? {top: 0} : {}
+                ]}>
+                    {df.map(({row, idx}, y) => {
 
-                                </View>
-                            )
-                        })
+                        // console.log('eee', row);
 
-                    }
+                        return <React.Fragment key={idx}>
+                            {
+                                row.map((tile, x) => {
+                                    return (
+                                        <View
+                                            key={tile.indexX}
+                                            style={styles.tile}>
 
-                </React.Fragment>
-            })}
+                                            <ImageBackground
+                                                source={tile.bg}
+                                                style={styles.tree}>
+                                                {
+                                                    tile.occupant ? (
+                                                        <Image
+                                                            source={tile.occupant}
+                                                            style={
+                                                                [{
+                                                                    position: 'absolute',
+                                                                    top: 0,
+                                                                    left: 0,
+                                                                    right: 0,
+                                                                    bottom: 0,
+                                                                    height: '100%',
+                                                                    width: '100%',
+                                                                }]
+                                                            }/>
+                                                    ) : null
+                                                }
+
+                                                {
+                                                    tile.fg ? (<Image
+                                                            source={tile.fg}
+                                                            style={styles.rock}
+                                                            resizeMode="contain"/>) :
+                                                        null
+                                                }
+                                            </ImageBackground>
+
+                                        </View>
+                                    )
+                                })
+
+                            }
+
+                        </React.Fragment>
+                    })}
+                </View>
+
+            </View>
 
             <Nav
                 setPlayerPos={setPlayerPos}
@@ -119,8 +141,32 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
+        // flexDirection: 'row',
         backgroundColor: '#fff',
     },
+    mapWrapper: {
+      width: 5 * dimensions.tileSize,
+      height: 5 * dimensions.tileSize,
+      overflow: "hidden"
+    },
+    map: {
+        // flex: 2,
+        flexDirection: 'row',
+        zIndex: 4,
+        flexWrap: 'wrap',
+        backgroundColor: 'magenta',
+        width: 7 * dimensions.tileSize,
+        height: 7 * dimensions.tileSize,
+        top: -dimensions.tileSize,
+        // borderWidth: 4,
+        // borderStyle: 'solid',
+        // borderSize: 5,
+        // borderColor: 'red',
+        // bottom: -dimensions.tileSize,
+        left: -dimensions.tileSize,
+        // right: -dimensions.tileSize,
+        position: 'absolute',
+        // overflow: "hidden"
+
+    }
 });

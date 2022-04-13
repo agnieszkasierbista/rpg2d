@@ -1,8 +1,9 @@
 import {Dimensions} from "react-native";
 
 const mapWidth = 7;
+const viewPortWidth = 5;
 const window = Dimensions.get('window');
-const tileSize = window.width / mapWidth;
+const tileSize = window.width / viewPortWidth;
 
 // const rowsCount = Math.floor(window.height / tileSize);
 
