@@ -1,11 +1,10 @@
 const tree1 = require('./pictures/baum.png');
 const waves = require('./pictures/water.png');
 const rock = require('./pictures/rock.png');
-const warrior = require('./pictures/warrior.png');
 const space = require('./pictures/space2.png');
-export const knight = require('./pictures/knight_16.png');
-
 const memoize = require('memoize');
+
+export const knight = require('./pictures/knight_16.png');
 
 const abyss = {
     bg: space,
@@ -18,16 +17,19 @@ const tree = {
     fg: rock,
     occupant: ''
 };
+
 const water = {
     bg: waves,
     fg: "",
     occupant: ''
 };
+
 const player = {
     bg: tree1,
     fg: rock,
     occupant: knight
 }
+
 export const gameMap = [
     [tree, water, tree, tree, tree, water, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
     [tree, water, tree, tree, tree, water, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
@@ -40,28 +42,14 @@ export const gameMap = [
     [tree, water, tree, tree, tree, tree, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
     [tree, water, tree, tree, tree, water, tree, tree, water, tree, water, tree, water, tree, water, tree, tree, water],
     [tree, water, tree, tree, tree, water, tree, tree, water, tree, water, tree, water, tree, tree, tree, tree, water],
-    // [tree, water, tree, tree, tree,  tree, tree, tree, water, tree, water, tree, water, tree, tree, tree, tree, water],
-    // [tree, water, tree, water, water, water, tree, tree, water, tree, water, tree, tree, tree, tree, tree, tree, water],
-    // [tree, water, tree, water, water,  water, tree, tree, water, tree, water, water, tree, tree, water, tree, tree, water],
-    // [water, water, tree, water, water, water, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
-    // [water, water, tree, water, water, water, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
-    // [tree, water, tree, tree, tree, water, tree, tree, water, tree, water, tree, water, tree, water, tree, tree, water],
-    // [tree, water, tree, tree, tree,  water, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
-    // [tree, water, tree, tree, tree,  water, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
-    // [tree, water, tree, tree, tree, water, tree, tree, water, tree, water, tree, tree, tree, water, tree, tree, water],
 ].map((row, y) => {
-    const sadfasfd = row.map((tile, x) => {
-        return {...tile, indexX: Math.random(), indexY: Math.random()}
-    })
-
     return {
         idx: Math.random(),
-        row: sadfasfd
+        row: row.map((tile, x) => {
+            return {...tile, indexX: Math.random(), indexY: Math.random()}
+        })
     }
-
 });
-
-console.log(324234324, gameMap);
 
 function clipRow(currentRow, playerPosX) {
 
@@ -69,7 +57,6 @@ function clipRow(currentRow, playerPosX) {
     const mapWidth = currentRow.length - 1;
     const distanceFromTheRightEdge = mapWidth - playerPosX;
     const distanceFromTheRightEdgeCofactor = (distanceFromTheRightEdge <= 3) ? 3 - distanceFromTheRightEdge : 0;
-
 
     return currentRow.reduce((acc, rowTile, mapX) => {
 

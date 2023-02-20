@@ -4,31 +4,21 @@ import dimensions from "./dimensions";
 import {clipMap, gameMap} from "./map";
 import {Nav, updateMapWithPlayerPos} from "./Nav";
 
-
 export default function App() {
-
     const playerPosition = {x: 2, y: 2};
 
     const [playerPos, setPlayerPos] = React.useState(playerPosition);
     const [map, setMap] = React.useState(gameMap);
 
     React.useEffect(() => {
-
         setMap(updateMapWithPlayerPos(playerPos))
-
     }, [])
 
     const memoizedClipMap = React.useCallback(() => {
         return clipMap(map, playerPos);
     }, [map, playerPos])
 
-    const df = memoizedClipMap();
-
-    console.log('playerPos.x === df[0].row.length - 1',
-        playerPos.x,
-
-        gameMap[0].row.length,
-        playerPos.x === df[0].row.length - 1)
+    const clippedMap = memoizedClipMap();
 
     return (
         <View style={styles.container}>
@@ -37,29 +27,23 @@ export default function App() {
                     {playerPos.x} : {playerPos.y}
                 </Text>
             </View>
-
-
             <View style={styles.mapWrapper}>
-                <View style={[styles.map,
-
-                    playerPos.x === gameMap[0].row.length - 1  ? {left: -2 * dimensions.tileSize} : {}, // mapWidth - 1 === 16
-                    playerPos.y > df.length ? {top: -2 * dimensions.tileSize} : {}, // mapHeight - 1 === 9
+                <View style={[
+                    styles.map,
+                    playerPos.x === gameMap[0].row.length - 1 ? {left: -2 * dimensions.tileSize} : {},
+                    playerPos.y > clippedMap.length ? {top: -2 * dimensions.tileSize} : {},
 
                     playerPos.x <= 1 ? {left: 0} : {},
                     playerPos.y <= 1 ? {top: 0} : {}
                 ]}>
-                    {df.map(({row, idx}, y) => {
-
-                        // console.log('eee', row);
-
+                    {clippedMap.map(({row, idx}) => {
                         return <React.Fragment key={idx}>
                             {
-                                row.map((tile, x) => {
+                                row.map((tile) => {
                                     return (
                                         <View
                                             key={tile.indexX}
                                             style={styles.tile}>
-
                                             <ImageBackground
                                                 source={tile.bg}
                                                 style={styles.tree}>
@@ -80,7 +64,6 @@ export default function App() {
                                                             }/>
                                                     ) : null
                                                 }
-
                                                 {
                                                     tile.fg ? (<Image
                                                             source={tile.fg}
@@ -89,28 +72,21 @@ export default function App() {
                                                         null
                                                 }
                                             </ImageBackground>
-
                                         </View>
                                     )
                                 })
-
                             }
-
                         </React.Fragment>
                     })}
                 </View>
-
             </View>
-
             <Nav
                 setPlayerPos={setPlayerPos}
                 setMap={setMap}
                 playerPos={playerPos}
                 mapDimensions={{y: map.length, x: map[0].row.length}}
             />
-
             <StatusBar hidden={true}>
-
             </StatusBar>
         </View>
     );
@@ -128,10 +104,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'green'
     },
-    water: {
-        // flex: 1,
-        // backgroundColor: 'blue'
-    },
+    water: {},
     rock: {
         position: 'absolute',
         left: '50%',
@@ -141,16 +114,14 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        // flexDirection: 'row',
         backgroundColor: '#fff',
     },
     mapWrapper: {
-      width: 5 * dimensions.tileSize,
-      height: 5 * dimensions.tileSize,
-      overflow: "hidden"
+        width: 5 * dimensions.tileSize,
+        height: 5 * dimensions.tileSize,
+        overflow: "hidden"
     },
     map: {
-        // flex: 2,
         flexDirection: 'row',
         zIndex: 4,
         flexWrap: 'wrap',
@@ -158,15 +129,7 @@ const styles = StyleSheet.create({
         width: 7 * dimensions.tileSize,
         height: 7 * dimensions.tileSize,
         top: -dimensions.tileSize,
-        // borderWidth: 4,
-        // borderStyle: 'solid',
-        // borderSize: 5,
-        // borderColor: 'red',
-        // bottom: -dimensions.tileSize,
         left: -dimensions.tileSize,
-        // right: -dimensions.tileSize,
         position: 'absolute',
-        // overflow: "hidden"
-
     }
 });
